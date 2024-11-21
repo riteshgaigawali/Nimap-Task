@@ -108,8 +108,17 @@
 
 ---
 
-## Contact
+## **API Testing with Postman**
 
-### Name : Ritesh Gaygawali
+To test the APIs using **Postman**, click on the button below to import the API collection directly into your Postman workspace:
 
-### Email : gaygawaliritesh@gmail.com
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/23803397-23c8fd02-44fc-4d6d-8d39-9c16936cff51?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D23803397-23c8fd02-44fc-4d6d-8d39-9c16936cff51%26entityType%3Dcollection%26workspaceId%3Df6aebfdc-4fe0-47e1-bbc0-54b9441dea5d)
+
+---
+
+## **Contact**
+
+- **Name**: Ritesh Gaygawali
+- **Email**: gaygawaliritesh@gmail.com
+
+---
