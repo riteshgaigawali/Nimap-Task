@@ -12,7 +12,7 @@ import java.util.List;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long catId;
 
     @Null
     private String name;
@@ -20,5 +20,12 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
 
-    // Getters and Setters
+    // No-args constructor
+    public Category() {
+    }
+
+    // Constructor with arguments
+    public Category(String name) {
+        this.name = name;
+    }
 }

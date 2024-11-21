@@ -11,7 +11,7 @@ import lombok.Setter;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long prodId;
 
     @NotNull
     private String name;
@@ -22,5 +22,14 @@ public class Product {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    // Getters and Setters
+    // No-args constructor
+    public Product() {
+    }
+
+    // Constructor with arguments
+    public Product(String name, double price, Category category) {
+        this.name = name;
+        this.price = price;
+        this.category = category;
+    }
 }
