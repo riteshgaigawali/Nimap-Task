@@ -1,17 +1,17 @@
 package com.nimap_task.service;
 
 import com.nimap_task.entity.Category;
+import com.nimap_task.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 public interface CategoryService {
-    Page<Category> getAllCategories(Pageable pageable); // Paginated method
-
-    Category getCategoryById(Long id);
-
     Category createCategory(Category category);
 
-    Category updateCategory(Long id, Category category);
+    Page<Category> getAllCategories(int page, int size);
 
-    void deleteCategory(Long id);
+    Category getCategoryById(long id) throws ResourceNotFoundException;
+
+    Category updateCategory(long id, Category categoryDetails) throws ResourceNotFoundException;
+
+    void deleteCategory(long id) throws ResourceNotFoundException;
 }

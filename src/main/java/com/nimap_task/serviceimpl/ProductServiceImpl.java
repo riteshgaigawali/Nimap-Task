@@ -4,65 +4,53 @@ import com.nimap_task.entity.Product;
 import com.nimap_task.exception.ResourceNotFoundException;
 import com.nimap_task.repository.ProductRepository;
 import com.nimap_task.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    @Override
-    public Page<Product> getAllProducts(Pageable pageable) {
-        try {
-            return productRepository.findAll(pageable); // Paginated data
-        } catch (Exception e) {
-            throw new RuntimeException("Error fetching paginated products: " + e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public Product getProductById(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
     @Override
     public Product createProduct(Product product) {
-        try {
-            return productRepository.save(product);
-        } catch (Exception e) {
-            throw new RuntimeException("Error creating product: " + e.getMessage(), e);
-        }
+        return productRepository.save(product);
     }
 
     @Override
-    public Product updateProduct(Long id, Product product) {
-        Product existingProduct = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
-
-        try {
-            existingProduct.setName(product.getName());
-            existingProduct.setPrice(product.getPrice());
-            existingProduct.setCategory(product.getCategory());
-            return productRepository.save(existingProduct);
-        } catch (Exception e) {
-            throw new RuntimeException("Error updating product: " + e.getMessage(), e);
-        }
+    public Page<Product> getAllProducts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findAll(pageable);
     }
 
     @Override
-    public void deleteProduct(Long id) {
-        Product existingProduct = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
+    public Product getProductById(long id) throws ResourceNotFoundException {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));
+    }
 
-        try {
-            productRepository.delete(existingProduct);
-        } catch (Exception e) {
-            throw new RuntimeException("Error deleting product: " + e.getMessage(), e);
-        }
+    @Override
+    public Product updateProduct(long id, Product productDetails) throws ResourceNotFoundException {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));
+
+        product.setName(productDetails.getName());
+        product.setPrice(productDetails.getPrice());
+        product.setCategory(productDetails.getCategory());
+        return productRepository.save(product);
+    }
+
+    @Override
+    public void deleteProduct(long id) throws ResourceNotFoundException {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));
+
+        productRepository.delete(product);
     }
 }

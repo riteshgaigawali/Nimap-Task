@@ -4,62 +4,51 @@ import com.nimap_task.entity.Category;
 import com.nimap_task.exception.ResourceNotFoundException;
 import com.nimap_task.repository.CategoryRepository;
 import com.nimap_task.service.CategoryService;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CategoryServiceImpl implements CategoryService {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
-    @Override
-    public Page<Category> getAllCategories(Pageable pageable) {
-        try {
-            return categoryRepository.findAll(pageable); // Paginated data
-        } catch (Exception e) {
-            throw new RuntimeException("Error fetching paginated categories: " + e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public Category getCategoryById(Long id) {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: " + id));
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
     public Category createCategory(Category category) {
-        try {
-            return categoryRepository.save(category);
-        } catch (Exception e) {
-            throw new RuntimeException("Error creating category: " + e.getMessage(), e);
-        }
+        return categoryRepository.save(category);
     }
 
     @Override
-    public Category updateCategory(Long id, Category category) {
-        Category existingCategory = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: " + id));
-
-        try {
-            existingCategory.setName(category.getName());
-            return categoryRepository.save(existingCategory);
-        } catch (Exception e) {
-            throw new RuntimeException("Error updating category: " + e.getMessage(), e);
-        }
+    public Page<Category> getAllCategories(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return categoryRepository.findAll(pageable);
     }
 
     @Override
-    public void deleteCategory(Long id) {
-        Category existingCategory = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: " + id));
+    public Category getCategoryById(long id) throws ResourceNotFoundException {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id " + id));
+    }
 
-        try {
-            categoryRepository.delete(existingCategory);
-        } catch (Exception e) {
-            throw new RuntimeException("Error deleting category: " + e.getMessage(), e);
-        }
+    @Override
+    public Category updateCategory(long id, Category categoryDetails) throws ResourceNotFoundException {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id " + id));
+
+        category.setName(categoryDetails.getName());
+        return categoryRepository.save(category);
+    }
+
+    @Override
+    public void deleteCategory(long id) throws ResourceNotFoundException {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id " + id));
+
+        categoryRepository.delete(category);
     }
 }
