@@ -1,7 +1,7 @@
 package com.nimap_task.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Null;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.List;
@@ -14,7 +14,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long catId;
 
-    @Null
+    @NotNull
     private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)

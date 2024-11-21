@@ -16,29 +16,38 @@ public class DataInitializer {
     @Bean
     public CommandLineRunner initData(CategoryRepository categoryRepository, ProductRepository productRepository) {
         return args -> {
-            // Creating Categories
-            Category electronics = categoryRepository.save(new Category("Electronics"));
-            Category books = categoryRepository.save(new Category("Books"));
-            Category clothing = categoryRepository.save(new Category("Clothing"));
-            Category homeAppliances = categoryRepository.save(new Category("Home Appliances"));
-            Category sports = categoryRepository.save(new Category("Sports"));
 
-            // Creating Products
-            productRepository.save(new Product("Smartphone", 699.99, electronics));
-            productRepository.save(new Product("Laptop", 999.99, electronics));
-            productRepository.save(new Product("Tablet", 499.99, electronics));
+            // Check if data already exists
+            if (categoryRepository.count() > 0 && productRepository.count() > 0) {
+                System.out.println("Data already exists. Skipping initialization.");
+                return;
+            } else {
+                // Creating Categories
+                Category electronics = categoryRepository.save(new Category("Electronics"));
+                Category books = categoryRepository.save(new Category("Books"));
+                Category clothing = categoryRepository.save(new Category("Clothing"));
+                Category homeAppliances = categoryRepository.save(new Category("Home Appliances"));
+                Category sports = categoryRepository.save(new Category("Sports"));
 
-            productRepository.save(new Product("Novel: The Great Gatsby", 14.99, books));
-            productRepository.save(new Product("Educational Book: Data Structures", 29.99, books));
+                // Creating Products
+                productRepository.save(new Product("Smartphone", 699.99, electronics));
+                productRepository.save(new Product("Laptop", 999.99, electronics));
+                productRepository.save(new Product("Tablet", 499.99, electronics));
 
-            productRepository.save(new Product("T-Shirt", 19.99, clothing));
-            productRepository.save(new Product("Jeans", 49.99, clothing));
+                productRepository.save(new Product("Novel: The Great Gatsby", 14.99, books));
+                productRepository.save(new Product("Educational Book: Data Structures", 29.99, books));
 
-            productRepository.save(new Product("Microwave Oven", 199.99, homeAppliances));
-            productRepository.save(new Product("Vacuum Cleaner", 149.99, homeAppliances));
+                productRepository.save(new Product("T-Shirt", 19.99, clothing));
+                productRepository.save(new Product("Jeans", 49.99, clothing));
 
-            productRepository.save(new Product("Football", 24.99, sports));
-            productRepository.save(new Product("Tennis Racket", 89.99, sports));
+                productRepository.save(new Product("Microwave Oven", 199.99, homeAppliances));
+                productRepository.save(new Product("Vacuum Cleaner", 149.99, homeAppliances));
+
+                productRepository.save(new Product("Football", 24.99, sports));
+                productRepository.save(new Product("Tennis Racket", 89.99, sports));
+
+            }
+
         };
     }
 }
