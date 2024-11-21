@@ -29,7 +29,7 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<Page<Product>> getAllProducts(
             @RequestParam int page,
-            @RequestParam int size) {
+            @RequestParam(defaultValue = "10") int size) {
         Page<Product> products = productService.getAllProducts(page, size);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
@@ -63,7 +63,7 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable long id) {
         try {
             productService.deleteProduct(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {
             throw ex; // Will be handled by GlobalExceptionHandler
         }

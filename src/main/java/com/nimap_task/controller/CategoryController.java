@@ -29,7 +29,7 @@ public class CategoryController {
     @GetMapping
     public ResponseEntity<Page<Category>> getAllCategories(
             @RequestParam int page,
-            @RequestParam int size) {
+            @RequestParam(defaultValue = "10") int size) {
         Page<Category> categories = categoryService.getAllCategories(page, size);
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
@@ -63,7 +63,7 @@ public class CategoryController {
     public ResponseEntity<Void> deleteCategory(@PathVariable long id) {
         try {
             categoryService.deleteCategory(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {
             throw ex; // Will be handled by GlobalExceptionHandler
         }
